@@ -1,0 +1,207 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 1. Sekin aylanib turuvchi rangli fon animatsiyasi */
+body {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    padding: 15px; /* Telefon ekranida chetlari yopishib qolmasligi uchun */
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Orqa fondagi uchib yuradigan animatsiyalar */
+.hearts-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floating-heart {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.4);
+    animation: floatUp 6s linear infinite;
+    bottom: -50px;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 0; }
+    50% { opacity: 0.8; }
+    100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
+}
+
+/* Asosiy konteyner */
+.container {
+    width: 100%;
+    max-width: 440px; /* Kompyuterda ham, telefonda ham ideal kenglik */
+    z-index: 10;
+    perspective: 1000px; 
+}
+
+/* Savol kartalarining chiroyli effektlari */
+.quiz-card {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(15px);
+    border-radius: 24px;
+    padding: 35px 25px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    display: none;
+    opacity: 0;
+    transform: translateY(30px) rotateX(-10deg);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+}
+
+/* Karta faollashganda kirib kelish animatsiyasi */
+.quiz-card.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+}
+
+.quiz-card.exit {
+    opacity: 0;
+    transform: translateY(-30px) rotateX(10deg);
+}
+
+h1 { color: #1e293b; margin-bottom: 15px; font-size: 26px; font-weight: 800; }
+h2 { color: #334155; margin-bottom: 12px; font-size: 20px; }
+p { color: #475569; line-height: 1.6; margin-bottom: 20px; font-size: 15px; }
+
+.question-text { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 25px; }
+
+.heart-icon, .heart-icon-large { font-size: 50px; margin-bottom: 12px; animation: pulse 1.5s infinite; }
+.success-icon, .sad-icon { font-size: 60px; margin-bottom: 12px; animation: bounce 2s infinite; }
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-15px); }
+    60% { transform: translateY(-7px); }
+}
+
+/* Tugmalar va variantlar maydoni */
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn {
+    background: linear-gradient(135deg, #4f46e5, #06b6d4);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 100%; /* Tugmalar ekranga to'liq moslashadi */
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.3);
+}
+
+.option-btn {
+    background: rgba(255, 255, 255, 0.9);
+    color: #1e293b;
+    border: 2px solid #e2e8f0;
+    text-align: center;
+}
+
+.option-btn:hover {
+    background: #ffffff;
+    border-color: #4f46e5;
+    color: #4f46e5;
+}
+
+.option-btn.selected {
+    animation: clickPulse 0.4s ease-out forwards;
+}
+
+@keyframes clickPulse {
+    0% { transform: scale(1); background: #4f46e5; color: white; }
+    50% { transform: scale(1.05); background: #06b6d4; }
+    100% { transform: scale(1); background: #4f46e5; color: white; }
+}
+
+.final-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.btn-yes {
+    background: linear-gradient(135deg, #ec4899, #f43f5e);
+    box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
+}
+
+.btn-no-normal {
+    background: rgba(15, 23, 42, 0.05);
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+.love-note, .sad-note {
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 15px;
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+.love-note { color: #db2777; }
+.sad-note { color: #475569; font-style: italic; }
+
+/* 📱 TELEFONLAR UCHUN MAXSUS MOSLASHUV (RESPONSIVE) */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .quiz-card {
+        padding: 30px 18px; /* Telefonda ichki joy torayadi, matn sig'ishi uchun */
+        border-radius: 20px;
+    }
+
+    h1 { font-size: 22px; }
+    h2 { font-size: 18px; }
+    p { font-size: 14px; }
+    .question-text { font-size: 16px; margin-bottom: 20px; }
+    
+    .btn {
+        padding: 14px 18px;
+        font-size: 14px; /* Telefonda tugma yozuvlari juda katta bo'lib ketmaydi */
+        border-radius: 14px;
+    }
+}

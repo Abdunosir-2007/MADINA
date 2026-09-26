@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madina uchun Maxsus So'rovnoma ✨</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Fondagi aylanuvchi chiroyli elementlar -->
+    <div class="hearts-bg" id="heartsBg"></div>
+
+    <div class="container">
+        <!-- 0-BOSQICH: KIRISH (INTRO) -->
+        <div id="step-intro" class="quiz-card active">
+            <div class="heart-icon">✨</div>
+            <h1>Salom Madina! 😊</h1>
+            <p>Bu men – o'sha o'zing bilgan <strong>Abdunosiraman</strong>. Qalaysan? 👋</p>
+            <p>Senga atab kichkina, qiziqarli va men uchun juda muhim bo'lgan so'rovnoma tayyorladim. Keling, birgalikda javob beramiz!</p>
+            <button class="btn" onclick="nextStep('intro', 'q1')">Boshladik! 🚀</button>
+        </div>
+
+        <!-- 1-SAVOL -->
+        <div id="step-q1" class="quiz-card">
+            <h2>1-Savol 🤔</h2>
+            <p class="question-text">Senga birinchi marta yozganimda xayolingdan nima o'tgan?</p>
+            <div class="options">
+                <button class="btn option-btn" onclick="selectOption('q1', 'Yana bitta zerikarli bola yozdi deb o\'ylaganman', 'q2')">Yana bitta zerikarli bola yozdi deb o'ylaganman 🙄</button>
+                <button class="btn option-btn" onclick="selectOption('q1', 'Qiziq, kim ekan bu deb hayron bo\'lganman', 'q2')">Qiziq, kim ekan bu deb hayron bo'lganman 🧐</button>
+                <button class="btn option-btn" onclick="selectOption('q1', 'Yozishidan yomon bolaga o\'xshamadi', 'q2')">Yozishidan yomon bolaga o'xshamadi 🙂</button>
+            </div>
+        </div>
+
+        <!-- 2-SAVOL -->
+        <div id="step-q2" class="quiz-card">
+            <h2>2-Savol 💬</h2>
+            <p class="question-text">Bizning suhbatlarimiz haqida nima deysan? Senga qiziqmi?</p>
+            <div class="options">
+                <button class="btn option-btn" onclick="selectOption('q2', 'Ha, zerikmayman, suhbatimiz yaxshi ketadi', 'q3')">Ha, zerikmayman, suhbatimiz yaxshi ketadi 👍</button>
+                <button class="btn option-btn" onclick="selectOption('q2', 'Ba\'zida zerikarli, ba\'zida qiziq', 'q3')">Ba'zida zerikarli, ba'zida qiziq 🤷‍♀️</button>
+                <button class="btn option-btn" onclick="selectOption('q2', 'Yozishmasak ham bo\'laveradi', 'q3')">Yozishmasak ham bo'laveradi 😶</button>
+            </div>
+        </div>
+
+        <!-- 3-SAVOL -->
+        <div id="step-q3" class="quiz-card">
+            <h2>3-Savol ⚡</h2>
+            <p class="question-text">Seni yaxshi ko'rishimni, senga nisbatan jiddiy niyatim borligini aytganimda nimalarni his qilding?</p>
+            <div class="options">
+                <button class="btn option-btn" onclick="selectOption('q3', 'To\'g\'risi, biroz shoshilyapti deb o\'yladim', 'q4')">To'g'risi, biroz shoshilyapti deb o'yladim ⏳</button>
+                <button class="btn option-btn" onclick="selectOption('q3', 'Menga yoqdi, lekin aniq bir qarorga kelishga erta', 'q4')">Menga yoqdi, lekin aniq bir qarorga kelishga erta 💭</button>
+                <button class="btn option-btn" onclick="selectOption('q3', 'Bunga shunchaki oddiy qaradim', 'q4')">Bunga shunchaki oddiy qaradim 🌸</button>
+            </div>
+        </div>
+
+        <!-- 4-SAVOL: ASOSIY FINAL SAVOL -->
+        <div id="step-q4" class="quiz-card">
+            <div class="heart-icon-large">❓</div>
+            <h2>Eng muhim savol...</h2>
+            <p class="question-text">Madina, men bilan birga (munosabatda) bo'lasanmi? Men buni chin dildan xohlayman...</p>
+            
+            <div class="final-actions">
+                <button class="btn btn-yes" onclick="finishQuiz('Xa, albatta! ❤️')">Xa, albatta! ❤️</button>
+                <button class="btn btn-no-normal" onclick="finishQuiz('Yo\'q, xohlamayman 😢')">Yo'q, xohlamayman 😢</button>
+            </div>
+        </div>
+
+        <!-- YAKUNIY EKRAN (HA DESA) -->
+        <div id="step-thanks-yes" class="quiz-card">
+            <div class="success-icon">🎉</div>
+            <h1>Rahmat! 🥰</h1>
+            <p>Sening bu javobing meni juda baxtli qildi.</p>
+            <p class="love-note">Tez orada ko'rishamiz deb umid qilaman! ✨</p>
+            <!-- Sizning Telegramingizga to'g'ridan-to'g'ri eltuvchi yaltiroq tugma -->
+            <button class="btn btn-yes" id="send-tg-yes" style="margin-top: 20px; width: 100%;">Javoblarni Abdunosirga yuborish 📲</button>
+        </div>
+
+        <!-- YAKUNIY EKRAN (YO'Q DESA) -->
+        <div id="step-thanks-no" class="quiz-card">
+            <div class="sad-icon">🥺</div>
+            <h1>Nima uchun, qizaloq?</h1>
+            <p>Sening javobingni qabul qildim va to'g'ri tushunaman...</p>
+            <p class="sad-note">Lekin baribir seni kutishda davom etaman. 🌸</p>
+            <!-- Javob baribir pochtaga emas, sizning Telegramingizga boradi -->
+            <button class="btn" id="send-tg-no" style="margin-top: 20px; width: 100%; background: #627d98;">Javoblarni Abdunosirga yuborish 📲</button>
+        </div>
+    </div>
+
+    <!-- Konfetti animatsiyasi (Mustaqil va xavfsiz CDN) -->
+    <script src="https://jsdelivr.net"></script>
+    <script src="script.js"></script>
+</body>
+</html>
