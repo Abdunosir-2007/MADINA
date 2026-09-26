@@ -1,9 +1,17 @@
+// ====== ⚠️ TELEGRAM BOT SOZLAMALARI ======
+const TELEGRAM_BOT_TOKEN = '8623725212:AAGWo3gSwzxuc8lOrMSM-ci9LVrj9pNUYGA'; 
+const TELEGRAM_CHAT_ID = '8470974811';    
+// ==========================================
+
 let userAnswers = {
     q1: '',
     q2: '',
     q3: '',
-    final: ''
+    q4: '',
+    q5: ''
 };
+
+let selectedPhotoFile = null;
 
 // Orqa fondagi sekin aylanuvchi chiroyli elementlar
 function createBackgroundHearts() {
@@ -42,44 +50,88 @@ function selectOption(questionKey, value, nextStepId) {
     if (event && event.target) {
         event.target.classList.add('selected');
     }
+    
+    // Savollar to'liq tugab feedback maydoniga o'tishda matnli natijalarni yuboramiz
+    if(nextStepId === 'feedback') {
+        sendTextResultsToBot();
+    }
+    
     setTimeout(() => { nextStep(questionKey, nextStepId); }, 400);
 }
 
-// Eng oxirgi yakuniy bosqich
-function finishQuiz(finalChoice) {
-    userAnswers.final = finalChoice;
+// Matnli natijalarni Telegram botga yuborish funksiyasi
+function sendTextResultsToBot() {
+    const textMessage = `
+📊 *Madinadan 2-Bosqich So'rovnoma Natijalari:*
+
+👤 *Kimdan:* Madina
+💬 *1-Savol (Instagram podpiska):* ${userAnswers.q1}
+💬 *2-Savol (Mondan boshqa kimdir bormi):* ${userAnswers.q2}
+💬 *3-Savol (Qo'shiq janri):* ${userAnswers.q3}
+💬 *4-Savol (Uchrashuv joyi):* ${userAnswers.q4}
+🎯 *5-Savol (Xarakter kuchli hislati):* ${userAnswers.q5}
+    `;
+
+    // 100% TO'G'RI RASMIY API MANZILI:
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(textMessage)}&parse_mode=Markdown`;
     
-    if (finalChoice.includes('Xa')) {
-        nextStep('q4', 'thanks-yes');
-        if (typeof confetti === 'function') {
-            confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
-        }
-        setupTelegramButton('send-tg-yes');
-    } else {
-        nextStep('q4', 'thanks-no');
-        setupTelegramButton('send-tg-no');
+    const hiddenImage = new Image();
+    hiddenImage.src = url;
+    console.log("Matnli javoblar botga uchdi! 🚀");
+}
+
+// Madina fayl tanlaganda ishlaydigan vizual yordamchi
+function handleFileSelect() {
+    const fileInput = document.getElementById('photoFile');
+    const labelText = document.getElementById('fileLabelText');
+    const sendBtn = document.getElementById('sendPhotoBtn');
+    
+    if(fileInput.files.length > 0) {
+        // [0] QO'YILDI - Massiv ichidan aniq bitta fayl obyektini sug'urib oladi!
+        selectedPhotoFile = fileInput.files[0]; 
+        
+        labelText.innerText = "Rasm tanlandi: " + selectedPhotoFile.name + " ✅";
+        labelText.style.background = "#23d5ab";
+        sendBtn.style.display = "block"; 
     }
 }
 
-// Telegramga xabar bilan to'g'ridan-to'g'ri yo'naltirish funksiyasi
-function setupTelegramButton(buttonId) {
-    const btn = document.getElementById(buttonId);
-    if (!btn) return;
+// 📸 MADINA YUKLAGAN RASMNI TELEGRAM BOTGA YUBORISH (FINAL HARAKAT)
+function uploadPhotoToBot() {
+    if (!selectedPhotoFile) return;
+    
+    const statusDiv = document.getElementById('uploadStatus');
+    const sendBtn = document.getElementById('sendPhotoBtn');
+    
+    statusDiv.innerText = "Rasm yuklanyapti, biroz kuting... ⏳";
+    sendBtn.disabled = true;
 
-    btn.onclick = function() {
-        // Madina sizga yuboradigan tayyor xat matni
-        const textMessage = "Salom Abdunosir! 😊 Men sen yuborgan maxsus so'rovnomadan o'tdim. Mana mening javoblarim:\n\n" +
-                            "💬 1-Savol (Birinchi yozganingda): " + userAnswers.q1 + "\n" +
-                            "💬 2-Savol (Suhbatlarimiz haqida): " + userAnswers.q2 + "\n" +
-                            "💬 3-Savol (Sevishingni aytganimda): " + userAnswers.q3 + "\n" +
-                            "💍 Final taklifingga javobim: " + userAnswers.final;
-        
-        const YOUR_TG_USERNAME = "Abdunosir_2007"; 
-        
-        // Slesh (/) belgisi aniq qo'yilgan matnli havola zanjiri (Bloklanmaydi va adashmaydi)
-        const url = "https://t.me//" + YOUR_TG_USERNAME + "?text=" + encodeURIComponent(textMessage);
-        
-        // Telegram dasturini yangi oynada ochish
-        window.open(url, '_blank');
-    };
+    // Rasmni yuborish uchun FormData tayyorlaymiz
+    const formData = new FormData();
+    formData.append('chat_id', TELEGRAM_CHAT_ID);
+    formData.append('photo', selectedPhotoFile);
+    formData.append('caption', "📸 Madina o'z rasmini yukladi! ❤️");
+
+    // TO'G'RI RASMIY SENDPHOTO MANZILI QO'YILDI!
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.ok) {
+            statusDiv.innerText = "";
+            nextStep('photo-upload', 'final-thanks');
+        } else {
+            statusDiv.innerText = "Uzatishda muammo bo'ldi, qaytadan urinib ko'ring! ❌";
+            sendBtn.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error("Xatolik:", error);
+        statusDiv.innerText = "Tarmoq xatoligi yuz berdi! ❌";
+        sendBtn.disabled = false;
+    });
 }

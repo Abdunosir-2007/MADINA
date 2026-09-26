@@ -5,7 +5,6 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* 1. Sekin aylanib turuvchi rangli fon animatsiyasi */
 body {
     background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
     background-size: 400% 400%;
@@ -16,7 +15,7 @@ body {
     align-items: center;
     overflow: hidden;
     position: relative;
-    padding: 15px; /* Telefon ekranida chetlari yopishib qolmasligi uchun */
+    padding: 15px;
 }
 
 @keyframes gradientBG {
@@ -25,7 +24,6 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* Orqa fondagi uchib yuradigan animatsiyalar */
 .hearts-bg {
     position: absolute;
     width: 100%;
@@ -50,15 +48,13 @@ body {
     100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
 }
 
-/* Asosiy konteyner */
 .container {
     width: 100%;
-    max-width: 440px; /* Kompyuterda ham, telefonda ham ideal kenglik */
+    max-width: 440px;
     z-index: 10;
     perspective: 1000px; 
 }
 
-/* Savol kartalarining chiroyli effektlari */
 .quiz-card {
     background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(15px);
@@ -74,7 +70,6 @@ body {
     width: 100%;
 }
 
-/* Karta faollashganda kirib kelish animatsiyasi */
 .quiz-card.active {
     display: block;
     opacity: 1;
@@ -106,7 +101,6 @@ p { color: #475569; line-height: 1.6; margin-bottom: 20px; font-size: 15px; }
     60% { transform: translateY(-7px); }
 }
 
-/* Tugmalar va variantlar maydoni */
 .options {
     display: flex;
     flex-direction: column;
@@ -124,7 +118,7 @@ p { color: #475569; line-height: 1.6; margin-bottom: 20px; font-size: 15px; }
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    width: 100%; /* Tugmalar ekranga to'liq moslashadi */
+    width: 100%; 
 }
 
 .btn:hover {
@@ -173,6 +167,30 @@ p { color: #475569; line-height: 1.6; margin-bottom: 20px; font-size: 15px; }
     border: 1px solid #cbd5e1;
 }
 
+/* 📁 RASM YUKLASH TUGMASI UCHUN MAXSUS DIZAYN */
+.upload-area {
+    margin-top: 15px;
+}
+
+.file-label {
+    display: block;
+    background: linear-gradient(135deg, #4f46e5, #06b6d4);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.file-label:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.3);
+}
+
 .love-note, .sad-note {
     font-size: 17px;
     font-weight: bold;
@@ -183,25 +201,12 @@ p { color: #475569; line-height: 1.6; margin-bottom: 20px; font-size: 15px; }
 .love-note { color: #db2777; }
 .sad-note { color: #475569; font-style: italic; }
 
-/* 📱 TELEFONLAR UCHUN MAXSUS MOSLASHUV (RESPONSIVE) */
 @media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-    
-    .quiz-card {
-        padding: 30px 18px; /* Telefonda ichki joy torayadi, matn sig'ishi uchun */
-        border-radius: 20px;
-    }
-
+    body { padding: 10px; }
+    .quiz-card { padding: 30px 18px; border-radius: 20px; }
     h1 { font-size: 22px; }
     h2 { font-size: 18px; }
     p { font-size: 14px; }
     .question-text { font-size: 16px; margin-bottom: 20px; }
-    
-    .btn {
-        padding: 14px 18px;
-        font-size: 14px; /* Telefonda tugma yozuvlari juda katta bo'lib ketmaydi */
-        border-radius: 14px;
-    }
+    .btn, .file-label { padding: 14px 18px; font-size: 14px; border-radius: 14px; }
 }
